@@ -9,4 +9,5 @@ class DatabaseController
         echo($request);
     }
 }
+
 ?>
