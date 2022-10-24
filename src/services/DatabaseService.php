@@ -56,4 +56,11 @@ public static function getTables() : array
     $tables = $resp->statment->fetchAll(PDO::FETCH_COLUMN);
     return $tables;
 }
+public function selectWhere(string $where = "1", array $bind = []) : array
+{
+    $sql = "SELECT * FROM $this->table WHERE $where;";
+    $resp = $this->query($sql, $bind);
+    $rows = $resp->statment->fetchAll(PDO::FETCH_CLASS);
+    return $rows;
+}
 }
