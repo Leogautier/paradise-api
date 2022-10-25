@@ -52,6 +52,8 @@ $e->getMessage()");
     /**
     * Retourne la liste des tables en base de données sous forme de tableau
     */
+
+    
     public static function getTables(): array
     {
         $dbs = new DatabaseService(null);
@@ -60,6 +62,13 @@ $e->getMessage()");
         $tables = $resp->statment->fetchAll(PDO::FETCH_COLUMN);
         return $tables;
     }
+
+    public function selectWhere($where = "1", $params = []){
+        $sql = "SELECT * FROM $this->table WHERE $where;";
+        $resp = $this->query($sql, $params);
+        $rows = $resp->statement->fetchAll(PDO::FETCH_CLASS);
+        return $rows;
+        }
 }
 
 ?>
