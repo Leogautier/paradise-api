@@ -8,7 +8,8 @@ class HttpResponse{
      * Cette méthode écrit dans le flux de sortie les data au format json,
      * puis elle arrête l'exécution du script
      */
-   public function send(array $data, int $status = 200) : void
+
+   public static function send(array $data, int $status = 200) : void
     {
         if($status >= 300){
             self::exit($status);
