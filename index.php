@@ -17,7 +17,7 @@ if(empty($request->route) || !in_array($request->route[0], $tables)){
     HttpResponse::exit();
 }
 $controller = new DatabaseController($request);
-//$result = $controller->execute();
+$result = $controller->execute();
 //HttpResponse::send(["data"=>$result]);
 HttpResponse::send(["message"=>"La table ".$request->route[0]." existe."]);
 

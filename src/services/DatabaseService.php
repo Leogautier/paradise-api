@@ -7,7 +7,7 @@ use PDOException;
 
 class DatabaseService
 {
-    public string $table;
+    public ?string $table;
     public string $pk;
     public function __construct(string $table = null)
     {
@@ -63,10 +63,15 @@ $e->getMessage()");
         return $tables;
     }
 
-    public function selectWhere($where = "1", $params = []){
+    /**
+* Retourne les lignes correspondant à la condition where
+*/
+
+
+    public function selectWhere(string $where = "1", array $bind = []) : array{
         $sql = "SELECT * FROM $this->table WHERE $where;";
-        $resp = $this->query($sql, $params);
-        $rows = $resp->statement->fetchAll(PDO::FETCH_CLASS);
+        $resp = $this->query($sql, $bind);
+        $rows = $resp->statment->fetchAll(PDO::FETCH_CLASS);
         return $rows;
         }
 }
