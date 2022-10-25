@@ -2,23 +2,9 @@
     "db": {
         "host": "localhost",
         "port": "3306",
-        "dbName": "db_blog",
+        "dbName": "paradise_api",
         "user": "root",
         "pass": ""
-    },
-
-    "hash" : {
-        "prefix" : "$argon2id$v=19$m=1024,t=2,p=2$"
-
-    },
-    "jwt": {
-        "secret": "NWs5b0Mxa054VHExVFZGNw$bGNuv0G9AfT9ZTDL960pMg"
-        
-    },
-    "restricted" : {
-        "GET/appUser": "$userRole == 1;",
-        "GET/appUser/:id": "$userRole == 1 || $userId == $id;",
-        "GET/comment": "userRole > 0;"
     }
 
     
