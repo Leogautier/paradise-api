@@ -90,7 +90,6 @@ private static function writeSchemasFiles(array $tables, bool $isForce): void
             //Si l’écriture ne fonctionne pas déclenche une Exception
             $dbs = new DatabaseService($table);
             $schemas = $dbs->getSchema();
-
             $fileContent = "<?php namespace Schema:\r\n\r\n";
             $fileContent .= "class $className {";
             $fileContent .= "const Columns {";
