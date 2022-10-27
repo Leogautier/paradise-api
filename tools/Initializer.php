@@ -72,35 +72,47 @@ public static function start(HttpRequest $request): bool
 * Si $isForce vaut true, la classe est supprimée (si elle existe) et réécrite
 */
 private static function writeSchemasFiles(array $tables, bool $isForce): void
-{
-    foreach ($tables as $table) {
-        $className = ucfirst($table);
-        $schemaFile = "src/Schemas/$className.php";
-        if (file_exists($schemaFile) && $isForce) {
-            //???
-            //Supprimer le fichier s’il existe
-            //Si la suppression ne fonctionne pas déclenche une Exception
-            if (!unlink($schemaFile)) {
-                throw new ErrorException("non_okay");
+    {
+        foreach ($tables as $table) {
+            $className = ucfirst($table);
+            $schemaFile = "src/Schemas/$className.php";
+            if (file_exists($schemaFile) && $isForce) {
+
+                //???
+                if (!unlink($schemaFile)) {
+                    throw new ErrorException("non_okay");
+                }
+                //Supprimer le fichier s’il existe
+                //Si la suppression ne fonctionne pas déclenche une Exception
+
+            }
+            if (!file_exists($schemaFile)) {
+                $dbs = new DatabaseService($table);
+                $schemas = $dbs->getSchema();
+                //Créer le fichier (voir exemple ci dessous)
+
+                $fileContent = " <?php namespace Schemas;\r\n\r\n";
+                $fileContent .= "class $className {";
+                $fileContent .= "const COLUMNS = [ \r\r";
+                foreach ($schemas as  $schema) {
+                    $name = $schema['Field'];
+                    $type= $schema['Type'];
+                    $nullable= $schema['Null'];
+                    $default= $schema['Default'];
+                    $fileContent .= "'$name'=> ['type' => '$type', 'nullable'=> '$nullable', 'default'=>'$default'],";
+                    $fileContent .= "\r\n";
+                }
+                //recupere les schema pour la table en cours , pour chauqe schema tu écris une nouvelle ligne dans le file content .
+                $bp = true;
+                $fileContent .= "];";
+                $fileContent .= "\r\n\r\n}";
+                file_put_contents($schemaFile, $fileContent);
+
+
+                //Si l’écriture ne fonctionne pas déclenche une Exception
+
             }
         }
-        if (!file_exists($schemaFile)) {
-            //???
-            //Créer le fichier (voir exemple ci dessous)
-            //Si l’écriture ne fonctionne pas déclenche une Exception
-            $dbs = new DatabaseService($table);
-            $schemas = $dbs->getSchema();
-            $fileContent = "<?php namespace Schema:\r\n\r\n";
-            $fileContent .= "class $className {";
-            $fileContent .= "const Columns {";
-            // foreach ($variable as $key => $value) {
-            // }
-            $bp = true;
-            $fileContent .= "}";
-            $fileContent .= "}";
-            file_put_contents($schemaFile, $fileContent);
-        }
     }
-}
 }
 ?>

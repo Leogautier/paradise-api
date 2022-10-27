@@ -81,8 +81,12 @@ $e->getMessage()");
 public function getSchema(){
     $schemas = [];
     $sql = "SHOW FULL COLUMNS FROM $this->table";
-    $resp = $this->query($sql);
+    $resp = $this->query($sql, []);
     $rows = $resp->statment->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $item) {
+
+        array_push($schemas, $item);
+    }
     return $schemas;
 }
 }
