@@ -19,7 +19,9 @@ class DatabaseController
     {
         $this->table = $request->route[0];
         $this->pk = "Id_" . $this->table;
-        $this->id = $request->route[1];
+        if(isset($request->route[1])){
+            $this->id = $request->route[1];
+        }
         $request_body = file_get_contents('php://input');
         $this->body = json_decode($request_body, true) ?: [];
         $this->action = $request->method;
@@ -47,4 +49,3 @@ class DatabaseController
      return $dbs->selectWhere("$this->pk = ?", [$this->id]);
     }
 }
-?>
